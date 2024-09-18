@@ -1,20 +1,30 @@
 <script setup>
-import { ref } from 'vue'; // Import the 'ref' function from Vue to create reactive references
+import { ref } from 'vue';
+import { reactive } from 'vue';
 
-const mouseX = ref(0);
-const mouseY = ref(0);
-// Reactive reference to store the message text
+const pepita = reactive({
+  energy: ref(100)
+})
 
-export defualt{
+const gToEat = ref(0)
+const kmsToFly = ref(0)
+
+export default{
   data(){
     return{
-      function showAlert(event) {
-        mouseX.value = client.eventX;
-        mouseY.value = client.eventY;
-      }
+const mouseX = ref(0);
+const mouseY = ref(0);
     }
   }
 }
+// Reactive reference to store the message text
+
+
+ function showAlert() {
+  mouseX.value = client.eventX;
+  mouseY.value = client.eventY;
+ }
+
 </script>
 
 <template>
