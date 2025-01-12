@@ -1,29 +1,30 @@
 <script setup>
-import { ref, computed } from 'vue';
+import { ref } from 'vue';
 
-// changeable variables for posistion
+// changeable reactive variables for posistion
 const mouseX = ref(0);
-const mouseY = ref(0);
+const mouseY = ref(0); 
+const toggleMenu = ref(false);
+const radiusOfMenu = 100;
 
-// boolean of the menu visibility: 
-const showMenu = ref(false);
+// Calculate the angle for menu items dynamically based on `numberOfMenus`
+const numberOfMenus = ref(10);
+const anglesOfCircle = ref((2 * Math.PI) / numberOfMenus.value)
 
-// how far from the mouse the menus should be and the number of menus 
-const radius = 100;
-const numberOfItems = ref(10);
-
-// Calculate the angle for menu items dynamically based on `numberOfItems`
-const anglesOfCircle = computed(() => (2 * Math.PI) / numberOfItems.value);
-
-// when loaded, it add an event listener that open the menu when you click anywhere in the window
-window.addEventListener('click', updateMenu);
+function updateAngleOfCircle(){
+  anglesOfCircle.value = (2 * Math.PI) / numberOfMenus.value;
+}
 
 // updates the loaction of the mouse, and the boolean for the menu 
+// when a mouse events happen
 function updateMenu(event) {
   mouseX.value = event.clientX;
   mouseY.value = event.clientY;
-  showMenu.value = !showMenu.value;
+  toggleMenu.value = !toggleMenu.value;
 }
+
+// it adds an event listener that open the menu when you click anywhere in the window
+window.addEventListener('click', updateMenu);
 
 // Prevent menu toggle when clicking on specific elements (LÆS OP)
 function preventMenu(event) {
@@ -32,25 +33,29 @@ function preventMenu(event) {
 
 // display which option was clicked on, every alert uses its index as an argument
 function showAlert(menuIndex) {
-  alert(`This is menu ${menuIndex}`);
+  alert(`This is menu ${menuIndex}`)
 }
+
 </script>
 
 <template>
-  <label @click="preventMenu">
+  <!-- stops the menu from opening if it the div is clicked-->
+  <div @click="preventMenu">
     Number of Menus:
-    <input type="number" v-model="numberOfItems" min="1" @click="preventMenu" />
-  </label>
+    <input type="number" v-model="numberOfMenus" @input="updateAngleOfCircle" />
+  </div>
 
-  <!-- if the showMenu boolean is true, display the menu -->
-  <div v-if="showMenu">
-
+  <!-- if the toggleMenu boolean is true, display the div / menu -->
+  <div v-if="toggleMenu">
     <!-- using v-for, i can render multiple elemetns, wherein i calculate each position in a circle. Furthermore i give it teh ability to show an alert for each menu clicked. -->
-    <div v-for="menuIndex in numberOfItems" :style="{
-    left: `${mouseX + radius * Math.cos(anglesOfCircle * menuIndex)}px`,
-    top: `${mouseY + radius * Math.sin(anglesOfCircle * menuIndex)}px`,
+    <div v-for="menuIndex in numberOfMenus"
+    :style="
+    {
+    left: `${mouseX + radiusOfMenu * Math.cos(anglesOfCircle * menuIndex)}px`,
+    top: `${mouseY + radiusOfMenu * Math.sin(anglesOfCircle * menuIndex)}px`,
     transform: 'translate(-50%, -50%)'
-    }" class="menu" @click="showAlert(menuIndex)">
+    } 
+    "class="menu" @click="showAlert(menuIndex)">
       <!-- display the menu index of each menu -->
       Menu: {{ menuIndex }}
     </div>
@@ -59,7 +64,7 @@ function showAlert(menuIndex) {
   
 </template>
 
-<style scoped>
+<style>
 .menu {
   width: 50px;
   height: 50px;
