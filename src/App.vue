@@ -9,10 +9,10 @@ const radiusOfMenu = 100;
 
 // Calculate the angle for menu items dynamically based on `numberOfMenus`
 const numberOfMenus = ref(10);
-const anglesOfCircle = ref((2 * Math.PI) / numberOfMenus.value)
+const anglePerMenu = ref((2 * Math.PI) / numberOfMenus.value)
 
-function updateAngleOfCircle(){
-  anglesOfCircle.value = (2 * Math.PI) / numberOfMenus.value;
+function updateAnglePerMenu(){
+  anglePerMenu.value = (2 * Math.PI) / numberOfMenus.value;
 }
 
 // updates the loaction of the mouse, and the boolean for the menu 
@@ -42,20 +42,22 @@ function showAlert(menuIndex) {
   <!-- stops the menu from opening if it the div is clicked-->
   <div @click="preventMenu">
     Number of Menus:
-    <input type="number" v-model="numberOfMenus" @input="updateAngleOfCircle" />
+    <input type="number" v-model="numberOfMenus" @input="updateAnglePerMenu" />
   </div>
 
   <!-- if the toggleMenu boolean is true, display the div / menu -->
-  <div v-if="toggleMenu">
+  <div v-show="toggleMenu">
     <!-- using v-for, i can render multiple elemetns, wherein i calculate each position in a circle. Furthermore i give it teh ability to show an alert for each menu clicked. -->
     <div v-for="menuIndex in numberOfMenus"
     :style="
     {
-    left: `${mouseX + radiusOfMenu * Math.cos(anglesOfCircle * menuIndex)}px`,
-    top: `${mouseY + radiusOfMenu * Math.sin(anglesOfCircle * menuIndex)}px`,
+    left: `${mouseX + radiusOfMenu * Math.cos(anglePerMenu * (menuIndex-1))}px`,
+    top: `${mouseY + radiusOfMenu * Math.sin(anglePerMenu * (menuIndex-1))}px`,
     transform: 'translate(-50%, -50%)'
-    } 
-    "class="menu" @click="showAlert(menuIndex)">
+    }"
+    class="menu" 
+    @click="showAlert(menuIndex)"
+    >
       <!-- display the menu index of each menu -->
       Menu: {{ menuIndex }}
     </div>
