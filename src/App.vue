@@ -41,7 +41,7 @@ function showAlert(menuIndex) {
 <template>
   <!-- stops the menu from opening if it the div is clicked-->
   <div @click="preventMenu">
-    Number of Menus:
+    Number of Menus: 
     <input type="number" v-model="numberOfMenus" @input="updateAnglePerMenu" />
   </div>
 
@@ -61,7 +61,7 @@ function showAlert(menuIndex) {
       <!-- display the menu index of each menu -->
       Menu: {{ menuIndex }}
     </div>
-
+¢
   </div>
   
 </template>
