@@ -1,7 +1,7 @@
 <script setup>
 import { ref } from 'vue';
 
-// changeable reactive variables for posistion
+// reactive variables
 const mouseX = ref(0);
 const mouseY = ref(0); 
 const toggleMenu = ref(false);
@@ -61,7 +61,7 @@ function showAlert(menuIndex) {
       <!-- display the menu index of each menu -->
       Menu: {{ menuIndex }}
     </div>
-¢
+
   </div>
   
 </template>
